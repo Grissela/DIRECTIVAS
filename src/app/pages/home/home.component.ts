@@ -9,32 +9,50 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class HomeComponent implements OnInit {
 
-  public Formulario!: FormGroup;
-  nombre!:string;
-  valido="Gracias por comunicarnos con nosotros";
-  respuesta!:string;
+  contactForm!:FormGroup;
+ 
+  
+  
+  constructor(private readonly fb: FormBuilder){}
 
-  constructor(private formBuilder:FormBuilder) { }
-
-  ngOnInit(): void {
-    this.Formulario = this.formBuilder.group(
-      {
-        name:['',
-          [
-            Validators.required,
-            Validators.minLength(12)
-          ]
-
-        ]
-      }
-    )
+  // Ahora el this.contactForm estara en this.initForm
+  ngOnInit():void{
+    this.contactForm = this.initForm();
+    
   }
 
-  send():any{
-    if(this.Formulario.valid)
-    this.respuesta="Gracias por comunicarnos con nosotros";
-    else
-    this.respuesta="Los campos no deben estar vacios";
+  // la funcion onsubmit, señalando que es al formulario llamado contactForm
+  onSubmit():void{
+    console.log('Form ->', this.contactForm.value)
+  }
+
+  // aqui ya se hace la validacion
+  initForm(): FormGroup {
+    return this.fb.group({
+      name: ['',
+       [Validators.required, 
+        Validators.minLength(5)
+       ]
+      ],
+      mail: 
+      ['', 
+      [Validators.required,
+      Validators.email
+      ]
+    ],
+     phone: 
+      ['', 
+      [Validators.required,
+      Validators.maxLength(9)
+      ]
+    ],
+      asunto: ['',
+      [Validators.required,
+       Validators.maxLength(20)
+        ]
+    ],
+      comment: ['', [Validators.required]],
+    });
   }
 
 }

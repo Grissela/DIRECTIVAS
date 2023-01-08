@@ -1,16 +1,56 @@
-<div class="bg-fuchsia-800 text-white mt-10 w-1/4 mx-auto">
-    <h1>Formulario de contacto</h1>
-    <div class="mx-auto  text-center">
-        <form [formGroup]="Formulario" (submit)="send()">
-            <!-- input nombres -->
-            <div class="my-5 p-3">
-                <label for="name" class="block pb-2">Nombres </label>
-                <input type="text" id="name" formControlName="name" class="py-1 px-3 text-black rounded">
-            </div>
-            <div *ngIf="valido">
-                <p>{{respuesta}} </p> 
-            </div>
-        </form>
-    </div>
+<div class="container w-50 mx-auto mt-4">
+    <h1 class="text-info h3 text-center mb-4">Formulario de contacto</h1>
+    <form (ngSubmit)="onSubmit()" [formGroup]="contactForm">
 
+        <!-- todos tienen la directiva resaltar -->
+        <!-- nombres -->
+        <div class="mb-4">
+            <input type="text"  id="name" name="name"  formControlName="name" resaltar placeholder="Nombre*">
+
+            <div *ngIf="contactForm.get('name')?.touched && contactForm.get('name')?.errors?.['required']" class="alert alert-danger">Este campo es requerido</div>
+
+            <div *ngIf="contactForm.get('name')?.touched && contactForm.get('name')?.errors?.['minlength']" class="alert alert-danger">El campo nombre debe tener más de {{contactForm.get('name')?.errors?.['minlength']?.requiredLength}} caracteres.</div>
+
+        </div>
+
+        <!-- email -->
+        <div class="mb-4">
+            <input type="email" id="mail" name="mail"  formControlName="mail" placeholder="Email*" resaltar>
+            
+            <div *ngIf="contactForm.get('mail')?.touched && contactForm.get('mail')?.errors?.['required']" class="alert alert-danger">Este campo es requerido</div>
+
+            <div *ngIf="contactForm.get('mail')?.touched && contactForm.get('mail')?.errors?.['email']" class="alert alert-danger">El campo nombre debe ser {{contactForm.get('mail')?.errors?.['email']?.requiredemail}} email.</div>
+
+        </div>
+
+        <!-- telefono -->
+        <div class="mb-4">
+            <input type="tel" id="phone" name="phone"  formControlName="phone" placeholder="Telefono" resaltar>
+            
+            <div *ngIf="contactForm.get('phone')?.touched && contactForm.get('phone')?.errors?.['required']" class="alert alert-danger">Este campo es requerido</div>
+
+            <div *ngIf="contactForm.get('phone')?.touched && contactForm.get('phone')?.errors?.['maxlength']" class="alert alert-danger">El campo no debe exceder de {{contactForm.get('phone')?.errors?.['maxlength']?.requiredLength}} caracteres.</div>
+
+        </div>
+        <!-- asunto -->
+        <div class="mb-4">
+            <input type="text" id="asunto" name="asunto"  formControlName="asunto" resaltar placeholder="Asunto*">
+
+            <div *ngIf="contactForm.get('asunto')?.touched && contactForm.get('asunto')?.errors?.['required']" class="alert alert-danger">Este campo es requerido</div>
+
+            <div *ngIf="contactForm.get('asunto')?.touched && contactForm.get('asunto')?.errors?.['maxlength']" class="alert alert-danger">El campo asunto no debe tener más de {{contactForm.get('asunto')?.errors?.['maxlength']?.requiredLength}} caracteres.</div>
+
+        </div>
+
+        <!-- mensaje -->
+        <div class="mb-4">
+            <textarea  name="comment" id="comment" rows="4" placeholder="Mensaje" formControlName="comment" required resaltar></textarea>
+
+            <div *ngIf="contactForm.get('comment')?.touched && contactForm.get('comment')?.errors?.['required']" class="alert alert-danger">Este campo es requerido</div>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-secondary" [disabled]="contactForm.invalid">Enviar</button>
+        </div>
+    </form>
 </div>
